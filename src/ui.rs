@@ -23,9 +23,9 @@ pub fn draw(frame: &mut Frame, app: &App) {
     let layout = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Length(3), // commands
-            Constraint::Length(3), // input
-            Constraint::Min(5),    // output
+            Constraint::Length(3), // command_box
+            Constraint::Length(3), // input_box
+            Constraint::Min(5),    // output_box
             Constraint::Length(1), // help line
         ])
         .split(size);
@@ -52,7 +52,7 @@ fn command_box(app: &App) -> Paragraph<'_> {
 
     let button_line = match app.commands.is_empty() {
         true => Line::styled(
-            " add command from input using [i] insert mode",
+            " [i]nsert command -> [esc] normal mode -> [s]ave",
             Style::default().fg(Color::DarkGray),
         ),
         false => Line::from(
@@ -91,7 +91,7 @@ fn input_box(app: &App) -> Paragraph<'_> {
 }
 
 fn output_box(app: &App) -> Paragraph<'_> {
-    Paragraph::new("Build succeeded.\nRunning...\nHello, world!")
+    Paragraph::new(Span::raw(&app.output))
         .block(Block::default().borders(Borders::ALL).title(" Output "))
 }
 

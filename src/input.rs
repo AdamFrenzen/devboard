@@ -17,11 +17,11 @@ pub fn watch_keys(app: &mut App, view_width: u16) -> std::io::Result<bool> {
                     // [l] right - select command to the right
                     KeyCode::Char('l') => app.next_command(view_width),
                     // [ret] run - run the selected command
-                    KeyCode::Enter => {
-                        println!("Running: {}", app.selected_command());
-                    }
+                    KeyCode::Enter => app.run_selected_command(),
                     KeyCode::Char('s') => app.save_command(),
-                    KeyCode::Char('d') => app.delete_command(),
+                    // [d] or [x] delete - delete selected command
+                    KeyCode::Char('d') => app.delete_selected_command(),
+                    KeyCode::Char('x') => app.delete_selected_command(),
                     _ => {}
                 },
                 // --- INSERT MODE ---
@@ -34,6 +34,8 @@ pub fn watch_keys(app: &mut App, view_width: u16) -> std::io::Result<bool> {
                     KeyCode::Backspace => {
                         app.input.pop();
                     }
+                    // [ret] run - run the input command without saving
+                    KeyCode::Enter => app.run_input(),
                     _ => {}
                 },
             }
