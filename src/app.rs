@@ -6,17 +6,19 @@ pub enum Mode {
 
 pub struct App {
     pub title: String,
+    pub mode: Mode,
+    pub input: String,
     pub commands: Vec<&'static str>,
     pub selected_index: usize,
     pub scroll_offset: u16,
-    pub input: String,
-    pub mode: Mode,
 }
 
 impl App {
     pub fn new() -> Self {
         Self {
-            title: " dashboard ".to_string(),
+            title: " devboard ".to_string(),
+            mode: Mode::Normal,
+            input: String::new(),
             commands: vec![
                 "cargo build",
                 "cargo run",
@@ -28,22 +30,20 @@ impl App {
             ],
             selected_index: 0,
             scroll_offset: 0,
-            input: String::new(),
-            mode: Mode::Normal,
         }
     }
 
-    pub fn next(&mut self, view_width: u16) {
+    pub fn next_command(&mut self, view_width: u16) {
         if self.selected_index < self.commands.len().saturating_sub(1) {
             self.selected_index += 1;
-            self.center_selected(view_width);
+            self.horizontal_scroll(view_width);
         }
     }
 
-    pub fn previous(&mut self, view_width: u16) {
+    pub fn previous_command(&mut self, view_width: u16) {
         if self.selected_index > 0 {
             self.selected_index -= 1;
-            self.center_selected(view_width);
+            self.horizontal_scroll(view_width);
         }
     }
 
@@ -51,14 +51,14 @@ impl App {
         self.commands[self.selected_index]
     }
 
-    pub fn center_selected(&mut self, view_width: u16) {
+    fn horizontal_scroll(&mut self, view_width: u16) {
         let mut x: u16 = 0;
 
         for (i, cmd) in self.commands.iter().enumerate() {
-            let width = cmd.len() as u16 + 8; // "[cmd]" + padding
+            // "[cmd]  " -> n chars "cmd" + 2 chars "[]" + 2 chars "  "
+            let width = cmd.len() as u16 + 4;
             if i == self.selected_index {
-                // scroll_offset is where this command should be centered
-                self.scroll_offset = x.saturating_sub(view_width / 2).max(0);
+                self.scroll_offset = x.saturating_sub(view_width / 6);
                 break;
             }
             x += width;

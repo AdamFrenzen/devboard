@@ -32,7 +32,7 @@ pub fn draw(f: &mut Frame, app: &App) {
 
     // 1️⃣ Commands box (top)
     let title = Line::from(vec![Span::styled(
-        " dashboard ",
+        &app.title,
         Style::default()
             .fg(Color::Cyan)
             .add_modifier(Modifier::BOLD),

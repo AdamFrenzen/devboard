@@ -13,9 +13,9 @@ pub fn watch_keys(app: &mut App, view_width: u16) -> std::io::Result<bool> {
                     // [i] insert - enter insert mode to write commands
                     KeyCode::Char('i') => app.mode = Mode::Insert,
                     // [h] left - select command to the left
-                    KeyCode::Char('h') => app.previous(view_width),
+                    KeyCode::Char('h') => app.previous_command(view_width),
                     // [l] right - select command to the right
-                    KeyCode::Char('l') => app.next(view_width),
+                    KeyCode::Char('l') => app.next_command(view_width),
                     // [ret] run - run the selected command
                     KeyCode::Enter => {
                         println!("Running: {}", app.selected_command());
