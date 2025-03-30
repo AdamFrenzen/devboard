@@ -50,28 +50,34 @@ fn command_box(app: &App) -> Paragraph<'_> {
             .add_modifier(Modifier::BOLD),
     )]);
 
-    let button_line = Line::from(
-        app.commands
-            .iter()
-            .enumerate()
-            .flat_map(|(i, cmd)| {
-                let style = if i == app.selected_index && app.mode == Mode::Normal {
-                    Style::default()
-                        .fg(Color::Gray)
-                        .bg(Color::Green)
-                        .add_modifier(Modifier::BOLD)
-                } else {
-                    Style::default().fg(RAINBOW[i % RAINBOW.len()])
-                };
+    let button_line = match app.commands.is_empty() {
+        true => Line::styled(
+            " add command from input using [i] insert mode",
+            Style::default().fg(Color::DarkGray),
+        ),
+        false => Line::from(
+            app.commands
+                .iter()
+                .enumerate()
+                .flat_map(|(i, cmd)| {
+                    let style = if i == app.selected_index && app.mode == Mode::Normal {
+                        Style::default()
+                            .fg(Color::Gray)
+                            .bg(Color::Green)
+                            .add_modifier(Modifier::BOLD)
+                    } else {
+                        Style::default().fg(RAINBOW[i % RAINBOW.len()])
+                    };
 
-                vec![
-                    Span::raw(" "),
-                    Span::styled(format!("[{}]", cmd), style),
-                    Span::raw(" "),
-                ]
-            })
-            .collect::<Vec<Span>>(),
-    );
+                    vec![
+                        Span::raw(" "),
+                        Span::styled(format!("[{}]", cmd), style),
+                        Span::raw(" "),
+                    ]
+                })
+                .collect::<Vec<Span>>(),
+        ),
+    };
 
     Paragraph::new(button_line)
         .block(Block::default().borders(Borders::ALL).title(title))

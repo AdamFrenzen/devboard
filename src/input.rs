@@ -20,6 +20,8 @@ pub fn watch_keys(app: &mut App, view_width: u16) -> std::io::Result<bool> {
                     KeyCode::Enter => {
                         println!("Running: {}", app.selected_command());
                     }
+                    KeyCode::Char('s') => app.save_command(),
+                    KeyCode::Char('d') => app.delete_command(),
                     _ => {}
                 },
                 // --- INSERT MODE ---

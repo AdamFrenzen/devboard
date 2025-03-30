@@ -8,7 +8,7 @@ pub struct App {
     pub title: String,
     pub mode: Mode,
     pub input: String,
-    pub commands: Vec<&'static str>,
+    pub commands: Vec<String>,
     pub selected_index: usize,
     pub scroll_offset: u16,
 }
@@ -17,17 +17,18 @@ impl App {
     pub fn new() -> Self {
         Self {
             title: " devboard ".to_string(),
-            mode: Mode::Normal,
+            mode: Mode::Insert,
             input: String::new(),
-            commands: vec![
-                "cargo build",
-                "cargo run",
-                "cargo test",
-                "nvim source",
-                "nvim ~/.tmux.conf",
-                "cargo build --release",
-                "mkdir mydir",
-            ],
+            commands: Vec::new(),
+            // commands: vec![
+            //     "cargo build",
+            //     "cargo run",
+            //     "cargo test",
+            //     "nvim source",
+            //     "nvim ~/.tmux.conf",
+            //     "cargo build --release",
+            //     "mkdir mydir",
+            // ],
             selected_index: 0,
             scroll_offset: 0,
         }
@@ -48,7 +49,15 @@ impl App {
     }
 
     pub fn selected_command(&self) -> &str {
-        self.commands[self.selected_index]
+        &self.commands[self.selected_index]
+    }
+
+    pub fn save_command(&mut self) {
+        self.commands.push(self.input.to_string());
+    }
+
+    pub fn delete_command(&mut self) {
+        self.commands.remove(self.selected_index);
     }
 
     fn horizontal_scroll(&mut self, view_width: u16) {
