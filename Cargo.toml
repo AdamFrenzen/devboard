@@ -1,0 +1,8 @@
+[package]
+name = "dboard"
+version = "0.1.0"
+edition = "2024"
+description = "Terminal dashboard for managing and running dev commands"
+license = "MIT"
+
+[dependencies]
