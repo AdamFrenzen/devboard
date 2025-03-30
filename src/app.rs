@@ -58,7 +58,7 @@ impl App {
             // "[cmd]  " -> n chars "cmd" + 2 chars "[]" + 2 chars "  "
             let width = cmd.len() as u16 + 4;
             if i == self.selected_index {
-                self.scroll_offset = x.saturating_sub(view_width / 6);
+                self.scroll_offset = x.saturating_sub(view_width / 7);
                 break;
             }
             x += width;
