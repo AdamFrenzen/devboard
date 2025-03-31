@@ -4,7 +4,7 @@ use ratatui::{
     Frame,
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
-    text::{Line, Span},
+    text::{Line, Span, Text},
     widgets::{Block, Borders, Paragraph},
 };
 
@@ -91,8 +91,9 @@ fn input_box(app: &App) -> Paragraph<'_> {
 }
 
 fn output_box(app: &App) -> Paragraph<'_> {
-    Paragraph::new(Span::raw(&app.output))
-        .block(Block::default().borders(Borders::ALL).title(" Output "))
+    let output = Text::from(app.output.as_str());
+
+    Paragraph::new(output).block(Block::default().title(" Output ").borders(Borders::ALL))
 }
 
 fn help_line(app: &App) -> Paragraph<'_> {
